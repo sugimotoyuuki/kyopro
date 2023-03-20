@@ -10,8 +10,15 @@ for _ in range(M):
     G[B].append([A, C])
 
 q = list()
+"""
+dist: 各点における最短距離その点を通ったか
+conf: その点を通ったか
+prev: 最短距離を通ったときの前の点
+"""
 dist = [int(2e9)] * (N + 1)
 conf = [False] * (N + 1)
+prev = [-1 for _ in range(N + 1)]
+mindist = list()
 
 dist[1] = 0
 hq.heappush(q, [0, 1])
@@ -24,10 +31,13 @@ while q:
     for nex, cost in G[pos]:
         if dist[nex] > dist[pos] + cost:
             dist[nex] = dist[pos] + cost
+            prev[nex] = pos  # 直前の点を保存
             hq.heappush(q, [dist[nex], nex])
 
-for i in range(1, len(dist)):
-    if dist[i] == int(2e9):
-        print(-1)
-    else:
-        print(dist[i])
+# ゴールから復元
+path = [N]
+while path[-1] != 1:
+    path.append(prev[path[-1]])
+
+path.reverse()
+print(*path)

@@ -8,7 +8,6 @@ path = list()
 
 # pypy3だとTLE
 def dfs(pos, G, visited):
-    visited[pos] = True
     path.append(pos)
     if pos == N:
         print(*path)
