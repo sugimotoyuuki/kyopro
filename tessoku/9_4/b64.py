@@ -18,7 +18,6 @@ prev: 最短距離を通ったときの前の点
 dist = [int(2e9)] * (N + 1)
 conf = [False] * (N + 1)
 prev = [-1 for _ in range(N + 1)]
-mindist = list()
 
 dist[1] = 0
 hq.heappush(q, [0, 1])
