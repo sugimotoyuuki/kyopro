@@ -25,39 +25,39 @@ class UnionFind:
     def same(self, u: int, v: int) -> bool:  # 同じ根かどうか
         return self.root(u) == self.root(v)
 
+    def root_list(self):  # 親のsetを取得
+        return {self.root(i) for i in range(n)}
+
     def count_root_v(self):  # 各根に対する頂点の数を求める
         count_v = [0] * self.N
         for i in range(self.N):
             count_v[self.root(i)] += 1
         return count_v
 
-    """def count_root_edge(self, edges):
-        count_edge = [0] * self.N
-        for u, v in edges:  # 入力として辺が与えられて、それぞれ1を引いている必要がある
-            if UF.par[u] == -1:
-                count_edge[u] += 1
-            else:
-                count_edge[UF.par[u]] += 1
-        return count_edge"""
-
-    def count_root_edge(self, edges):
+    def count_root_edge(self, edges):  # 各根に対する辺の数を求める
         count_edge = [0] * self.N
         for u, _ in edges:  # 入力として辺が与えられて、それぞれ1を引いている必要がある
-            count_edge[UF.root(u)] += 1
+            count_edge[self.root(u)] += 1
         return count_edge
 
 
-# input
 n, m = map(int, input().split())
 edges = [list(map(lambda x: int(x) - 1, input().split())) for _ in range(m)]
 
 UF = UnionFind(n)
-
-
+deg = [0] * n
 for u, v in edges:
-    UF.unite(u, v)
+    deg[u] += 1
+    deg[v] += 1
+    if UF.same(u, v):
+        print("No")
+        exit(0)
+    else:
+        UF.unite(u, v)
 
-count_v = UF.count_root_v()
-count_edge = UF.count_root_edge(edges)
-ans = "Yes" if count_v == count_edge else "No"
-print(ans)
+for d in deg:
+    if d > 2:
+        print("No")
+        exit(0)
+
+print("No") if len(UF.root_list()) > 1 else print("Yes")
