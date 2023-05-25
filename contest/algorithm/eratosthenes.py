@@ -1,3 +1,4 @@
+# 入力値以下の素数を返す
 def erastos(z):
     is_prime_list = ([False, True] * (z // 2 + 1))[0 : z + 1]
     is_prime_list[1] = False

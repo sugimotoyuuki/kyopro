@@ -3,10 +3,7 @@ import sys
 sys.setrecursionlimit(10**6)
 
 n, m = map(int, input().split())
-
 g = {i: [] for i in range(n)}  # 辞書じゃなくて配列でも実装可
-
-
 deg = [0] * (n)
 for _ in range(m):
     u, v = map(int, input().split())
@@ -16,7 +13,6 @@ for _ in range(m):
     g[v].append(u)
     deg[u] += 1 if deg[u] < 2 else exit(print("No"))
     deg[v] += 1 if deg[v] < 2 else exit(print("No"))
-
 seen = [False] * n
 
 
