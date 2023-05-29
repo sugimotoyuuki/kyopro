@@ -1,19 +1,11 @@
-s = input()
+s_bin = input()
 n = int(input())
 
-max_s = list()
-for el in s:
-    if el == "?":
-        max_s.append("1")
-    else:
-        max_s.append(el)
-max_s = int("".join(max_s), 2)
+if int(s_bin) <= n:
+    print(n)
+    exit()
 
-ans = list()
-if n >= max_s:
-    print(max_s)    
-else:
-
-
-
-
+n_bin = format(n, "b")
+for i, s_dig, n_dig in enumerate(zip(s_bin, n_bin)):
+    if s_dig != n_dig:
+        diff_dig = i
