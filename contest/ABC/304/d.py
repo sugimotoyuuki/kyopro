@@ -1,0 +1,7 @@
+w, h = map(int, input().split())
+n = int(input())
+p, q = map(int, input().split())
+A = int(input())
+a = list(map(int, input().split()))
+B = int(input())
+b = list(map(int, input().split()))
