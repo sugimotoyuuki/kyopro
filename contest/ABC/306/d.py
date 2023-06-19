@@ -9,11 +9,9 @@ for i in range(n):
     # 食べるとき
     if x == 0:
         dp[i + 1][0] = max(dp[i][0], dp[i][0] + y, dp[i][1] + y)
+        dp[i + 1][1] = dp[i][1]
     elif x == 1:
+        dp[i + 1][0] = dp[i][0]
         dp[i + 1][1] = max(dp[i][1], dp[i][0] + y)
-
-    # 食べないとき
-    dp[i + 1][0] = max(dp[i + 1][0], dp[i][0])
-    dp[i + 1][1] = max(dp[i + 1][1], dp[i][1])
 
 print(max(dp[n][0], dp[n][1]))
