@@ -1,40 +1,27 @@
-from collections import deque
-
 h, w = map(int, input().split())
-s = [list() for _ in range(h)]
-idx = 0
-for i in range(h):
-    for el in input():
-        idx += 1
-        if el == "s":
-            s[i].append(0)
-        elif el == "n":
-            s[i].append(1)
-        elif el == "u":
-            s[i].append(2)
-        elif el == "k":
-            s[i].append(3)
-        elif el == "e":
-            s[i].append(4)
-        else:
-            s[i].append(100)
+s = [list(input()) for _ in range(h)]
+snuke = ["s", "n", "u", "k", "e"]
+if s[0][0] != "s":
+    print("No")
+    exit()
 
 dir = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-cur_num = 0
-que = deque()
-que.append((0, 0))
-idx = 0
-while que:
-    x, y = que.popleft()
+visited = [[False] * w for _ in range(h)]
+st = [(0, 0)]
+
+# 迷路はbfsでは計算量が多くなる
+while st:
+    x, y = st.pop()
+    visited[x][y] = True
     if x == h - 1 and y == w - 1:
         print("Yes")
         exit()
-    curr_num = s[x][y]
-    for d in dir:
-        next_x, next_y = x + d[0], y + d[1]
+    for dx, dy in dir:
+        next_x, next_y = x + dx, y + dy
+        next_idx = (snuke.index(s[x][y]) + 1) % 5
         if 0 <= next_x < h and 0 <= next_y < w:
-            if s[next_x][next_y] == curr_num + 1 or (
-                curr_num == 4 and s[next_x][next_y] == 0
-            ):
-                que.append((next_x, next_y))
+            if visited[next_x][next_y]:
+                continue
+            if s[next_x][next_y] == snuke[next_idx]:
+                st.append((next_x, next_y))
 print("No")

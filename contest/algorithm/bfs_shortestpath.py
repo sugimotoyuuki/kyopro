@@ -22,6 +22,7 @@ for i in range(h):
             G[w * i + j + 1].append(w * i + j)
 
 # BFS
+# stackを使えばDFSになる
 end = h * w - 1
 path_list = []
 dist = [-1 for _ in range(h * w)]
