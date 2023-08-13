@@ -25,27 +25,11 @@ class UnionFind:
     def same(self, u: int, v: int) -> bool:  # 同じ根かどうか
         return self.root(u) == self.root(v)
 
-    def root_list(self):  # 親のsetを取得
-        return {self.root(i) for i in range(self.N)}
-
     def count_root_v(self):  # 各根に対する頂点の数を求める
         count_v = [0] * self.N
         for i in range(self.N):
             count_v[self.root(i)] += 1
         return count_v
-
-    # 各根に対する辺の数を求める,
-    # parは親要素を表すのに不十分だが先の要素は0に更新されていくため成り立つ
-    # 可読性は下がるが計算量は抑えられる
-    """def count_root_edge(self, edges):
-        count_edge = [0] * self.N
-        for u, v in edges:  # 入力として辺が与えられて、それぞれ1を引いている必要がある
-            if UF.par[u] == -1:
-                count_edge[u] += 1
-            else:
-                count_edge[UF.par[u]] += 1
-
-        return count_edge"""
 
     def count_root_edge(self, edges):  # 各根に対する辺の数を求める
         count_edge = [0] * self.N
@@ -54,17 +38,35 @@ class UnionFind:
         return count_edge
 
 
-# input
-n, m = map(int, input().split())
+h, w = map(int, input().split())
+q = int(input())
+UF = UnionFind(h * w)
+maze = [[-1] * w for _ in range(h)]
+idx = 0
+dxy = [[1, 0], [-1, 0], [0, 1], [0, -1]]
 
-UF = UnionFind(n)
-x = 0
-for _ in range(m):
-    a, _, c, _ = input().split()
-    u, v = int(a) - 1, int(c) - 1
-    if UF.same(u, v):
-        x += 1
-    UF.unite(u, v)
-
-par_num = len(UF.par_list())
-print(x, par_num - x)
+for _ in range(q):
+    q = list(map(int, input().split()))
+    if q[0] == 1:
+        _, r, c = q
+        r -= 1
+        c -= 1
+        maze[r][c] = idx
+        idx += 1
+        for dx, dy in dxy:
+            nx = r + dx
+            ny = c + dy
+            if 0 <= nx < h and 0 <= ny < w and maze[nx][ny] != -1:
+                UF.unite(maze[r][c], maze[nx][ny])
+    else:
+        _, ra, ca, rb, cb = q
+        ra -= 1
+        ca -= 1
+        rb -= 1
+        cb -= 1
+        if maze[ra][ca] == -1 or maze[rb][cb] == -1:
+            print("No")
+        elif UF.same(maze[ra][ca], maze[rb][cb]):
+            print("Yes")
+        else:
+            print("No")
