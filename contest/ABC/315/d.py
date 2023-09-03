@@ -1,31 +1,53 @@
-def remaining_cookies(H, W, cookies):
-    while True:
-        to_remove = set()
-        for i in range(H):
-            row = [cookies[i][j] for j in range(W) if cookies[i][j] is not None]
-            if len(row) >= 2 and len(set(row)) == 1:
-                for j in range(W):
-                    if cookies[i][j] is not None:
-                        to_remove.add((i, j))
-
-        for j in range(W):
-            col = [cookies[i][j] for i in range(H) if cookies[i][j] is not None]
-            if len(col) >= 2 and len(set(col)) == 1:
-                for i in range(H):
-                    if cookies[i][j] is not None:
-                        to_remove.add((i, j))
-
-        if to_remove:
-            for i, j in to_remove:
-                cookies[i][j] = None
-        else:
-            break
-
-    count = sum(1 for i in range(H) for j in range(W) if cookies[i][j] is not None)
-    return count
+from pprint import pprint
 
 
 h, w = map(int, input().split())
-g = [list(input()) for _ in range(h)]
+row = [[0] * 26 for _ in range(h)]
+col = [[0] * 26 for _ in range(w)]
 
-print(remaining_cookies(h, w, g))
+# 列、行ごとに、各文字が何個含まれるかを数える
+for i in range(h):
+    c = list(input())
+    for j, el in enumerate(c):
+        row[i][ord(el) - 97] += 1
+        col[j][ord(el) - 97] += 1
+
+c_h, c_w = h, w
+f_row = [False] * h
+f_col = [False] * w
+
+
+for _ in range(h + w):
+    u_row, u_col = [], []
+
+    # 行方向でアルファベットの数が、c_wと等しいところを探し、u_rowにインデックスを格納
+    for i in range(h):
+        if f_row[i]:
+            continue
+        for j in range(26):
+            if row[i][j] == c_w and c_w >= 2:
+                u_row.append((i, j))
+
+    # 列方向でアルファベットの数が、c_hと等しいところを探し、u_rowにインデックスを格納
+    for i in range(w):
+        if f_col[i]:
+            continue
+        for j in range(26):
+            if col[i][j] == c_h and c_h >= 2:
+                u_col.append((i, j))
+
+    # jはアルファベットの番号と一致している
+    # 格納したインデックスを展開する。一行まるまる消えたので、すべての列からそのアルファベットの数を1引く
+    for i, j in u_row:
+        for k in range(w):
+            col[k][j] -= 1
+        f_row[i] = True
+        c_h -= 1
+
+    for i, j in u_col:
+        for k in range(h):
+            row[k][j] -= 1
+        f_col[i] = True
+        c_w -= 1
+
+pprint(c_h * c_w)
