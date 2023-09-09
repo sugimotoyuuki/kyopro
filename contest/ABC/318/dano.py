@@ -1,15 +1,10 @@
-N = int(input())
-D = []  # D[i][j] will contain the distance from vertex i+1 to vertex j+1
-for i in range(N - 1):
-    row = list(map(int, input().split()))
-    D.append(row)
+#
 
-# Initialize maximum weight variable
-max_weight = 0
-
-# Loop through the array to find the maximum weight
-for i in range(N - 1):
-    for j in range(len(D[i])):
-        max_weight = max(max_weight, D[i][j])
-
-print(max_weight)
+n = 3
+for bit in range((1 << n) - 1):
+    s = set()
+    for i in range(n):
+        if not bit & (1 << i):  # フラグが立っているものは選ばない
+            print(bit, 1 << i)
+            s.add(i)
+    print(s)
