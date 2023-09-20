@@ -1,17 +1,20 @@
-n = int(input())
+from itertools import combinations as comb
+from bisect import bisect_right
 
-# 2^60から10^18になる
-bin_set = [2**i for i in range(60)]
+t = int(input())
 
+bins = []
+for i, j, k in comb(range(60), 3):
+    tmp = ["0"] * 60
+    tmp[-i - 1] = "1"
+    tmp[-j - 1] = "1"
+    tmp[-k - 1] = "1"
+    bins.append(int("".join(tmp), 2))
+bins.sort()
 
-for _ in range(n):
-    d = int(input())
-    if d < 7:
+for _ in range(t):
+    n = int(input())
+    if n < 7:
         print(-1)
         continue
-    ans = 0
-    for i in range(d, 6, -1):
-        count = 0
-        for i, el in enumerate(b):
-            print(i)
-    # print(int("".join(b), 2))
+    print(bins[bisect_right(bins, n) - 1])

@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 flake8 = "*"
 black = "*"
+sortedcontainers = "*"
 
 [dev-packages]
 
